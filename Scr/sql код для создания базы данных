@@ -1,0 +1,51 @@
+CREATE TABLE operators (
+    operator_id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    position TEXT,
+    cert_number TEXT
+);
+
+CREATE TABLE smartphones (
+    smartphone_id INTEGER PRIMARY KEY,
+    serial_number TEXT NOT NULL UNIQUE,
+    model TEXT,
+    inspection_date TEXT NOT NULL,
+    operator_id INTEGER NOT NULL,
+    FOREIGN KEY (operator_id) REFERENCES operators(operator_id)
+);
+
+CREATE TABLE damage_types (
+    damage_type_id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT
+);
+
+CREATE TABLE damages (
+    damage_id INTEGER PRIMARY KEY,
+    smartphone_id INTEGER NOT NULL,
+    damage_type_id INTEGER NOT NULL,
+    x_coord INTEGER,
+    y_coord INTEGER,
+    width_mm REAL,
+    height_mm REAL,
+    severity TEXT,
+    FOREIGN KEY (smartphone_id) REFERENCES smartphones(smartphone_id),
+    FOREIGN KEY (damage_type_id) REFERENCES damage_types(damage_type_id)
+);
+
+CREATE TABLE cameras (
+    camera_id INTEGER PRIMARY KEY,
+    model TEXT,
+    resolution TEXT,
+    location TEXT
+);
+
+CREATE TABLE images (
+    image_id INTEGER PRIMARY KEY,
+    smartphone_id INTEGER NOT NULL,
+    camera_id INTEGER,
+    image_path TEXT NOT NULL,
+    captured_at TEXT,
+    FOREIGN KEY (smartphone_id) REFERENCES smartphones(smartphone_id),
+    FOREIGN KEY (camera_id) REFERENCES cameras(camera_id)
+);
